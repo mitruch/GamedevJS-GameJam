@@ -8,11 +8,10 @@ class Board {
     }
 
     changeLevel(level, first = false) {
-        let posOfGoal = {x: 0, y: 0};
         for (let i = 0; i < level.length; i++) {
             this.level[i] = level[i].slice();
-            for(let j=0;j<level[i].length;j++) {
-                if(level[i][j] === 'x') this.fruits++;
+            for (let j = 0; j < level[i].length; j++) {
+                if (level[i][j] === 'x') this.fruits++;
             }
             if (!first) {
                 let index = this.level[i].indexOf('p');
@@ -41,7 +40,12 @@ class Board {
                         ctx.fillStyle = 'rgb(244, 143, 66)';
                     }
                     else if (tile === 'g') {
-                        ctx.fillStyle = 'rgb(255,255,0)';
+                        if (player.score == board.fruits) {
+                            ctx.fillStyle = 'rgb(255,255,0)';
+                        }
+                        else {
+                            ctx.fillStyle = 'rgb(128,128,0)';
+                        }
                     }
 
                     if (tile === 'l') {
@@ -61,37 +65,37 @@ class Board {
 
     collision(player) {
         let objInIndex = this.level[Math.round(player.y / tileSize)][Math.round(player.x / tileSize)];
-        if ( objInIndex == 'p') {
+        if (objInIndex == 'p') {
             if (player.dir == 'right') {
                 player.dir = 'down';
-                player.x-=player.speed;
+                player.x -= player.speed;
             } else if (player.dir == 'left') {
                 player.dir = 'up';
-                player.x+=player.speed;
+                player.x += player.speed;
             } else if (player.dir == 'up') {
                 player.dir = 'right';
-                player.y+=player.speed;
+                player.y += player.speed;
             } else if (player.dir == 'down') {
                 player.dir = 'left';
-                player.y-=player.speed;
+                player.y -= player.speed;
             }
         }
         else if (objInIndex == 'l') {
             if (player.dir == 'right') {
                 player.dir = 'up';
-                player.x-=player.speed;
+                player.x -= player.speed;
             } else if (player.dir == 'left') {
                 player.dir = 'down';
-                player.x+=player.speed;
+                player.x += player.speed;
             } else if (player.dir == 'up') {
                 player.dir = 'left';
-                player.y+=player.speed;
+                player.y += player.speed;
             } else if (player.dir == 'down') {
                 player.dir = 'right';
-                player.y-=player.speed;
+                player.y -= player.speed;
             }
         }
-        else if (objInIndex == 'x' ) {
+        else if (objInIndex == 'x') {
             this.level[Math.round(player.y / tileSize)][Math.round(player.x / tileSize)] = "e";
             player.score++;
         }
