@@ -120,11 +120,13 @@ class Board {
 
 
     setLeft(x, y) {
-        this.level[y][x] = "l";
+        if(this.level[y][x] == 'e')
+            this.level[y][x] = "l";
     }
 
     setRight(x, y) {
-        this.level[y][x] = "p";
+        if(this.level[y][x] == 'e')
+            this.level[y][x] = "p";
     }
 
 }
