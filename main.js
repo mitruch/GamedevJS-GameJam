@@ -2,9 +2,11 @@ let canvas = document.createElement('canvas'),
     ctx = canvas.getContext('2d'),
     last = new Date().getTime(),
     currentLevel = 0,
+    lpm = false,
     levels,
+    board,
     tileSize = 50,
-    p={x: 0, y: 0, dir: 'right', energy: 0};
+    player = { x: 0, y: 0, dir: 'right', energy: 0 };
 
 let clear = () => {
     ctx.fillStyle = "rgb(0,0,0)";
@@ -20,29 +22,61 @@ let scrollCb = (event) => {
     player.energy++;
 }
 
+let lpmCb = (event) => {
+    let dx = player.x, dy = player.y;
+    if (player.dir == 'right') dx++;
+    if (player.dir == 'left') dx--;
+    if (player.dir == 'up') dy--;
+    if (player.dir == 'down') dy++;
+    board.setLeftDown(dx, dy);
+}
+
+let ppmCb = (event) => {
+    let dx = player.x, dy = player.y;
+    if (player.dir == 'right') dx++;
+    if (player.dir == 'left') dx--;
+    if (player.dir == 'up') dy--;
+    if (player.dir == 'down') dy++;
+    board.setLeftUp(dx, dy);
+
+    event.preventDefault();
+}
+
 let update = () => {
+    if (player.energy > 10) {
+        player.x++;
+        player.energy -= 10;
+    }
+    if(board.isColliding(player)) {
+        board.changeDir(player);   
+    }
+}
+
+let drawMap = () => {
 
 }
 
 let draw = () => {
     clear();
 
-    for (let i = 0; i < levels[currentLevel].length; i++) {
-        let level = levels[currentLevel];
-        for (let j = 0; j < level[i].length; j++) {
-            let tile = level[i][j];
-            if(p.x == j && p.y == i) {
-                ctx.fillStyle = 'rgb(0,200,0)'
-            }
-            else if (tile === 'e') {
-                ctx.fillStyle = 'rgb(0,128,128)';
-            }
-            else if (tile === 'x') {
-                ctx.fillStyle = 'rgb(200,0,0)';
-            }
-            ctx.fillRect(j * tileSize + 1, i * tileSize + 1, tileSize - 2 , tileSize - 2);
-        }
-    }
+    board.draw();
+
+    // for (let i = 0; i < levels[currentLevel].length; i++) {
+    //     let level = levels[currentLevel];
+    //     for (let j = 0; j < level[i].length; j++) {
+    //         let tile = level[i][j];
+    //         if (p.x == j && p.y == i) {
+    //             ctx.fillStyle = 'rgb(0,200,0)'
+    //         }
+    //         else if (tile === 'e') {
+    //             ctx.fillStyle = 'rgb(0,128,128)';
+    //         }
+    //         else if (tile === 'x') {
+    //             ctx.fillStyle = 'rgb(200,0,0)';
+    //         }
+    //         ctx.fillRect(j * tileSize + 1, i * tileSize + 1, tileSize - 2, tileSize - 2);
+    //     }
+    // }
 }
 
 let loop = () => {
@@ -59,17 +93,22 @@ let loop = () => {
 let init = () => {
     window.onresize = resize;
     window.onmousewheel = scrollCb;
+    window.onclick = lpmCb;
+    window.oncontextmenu = ppmCb;
+
     resize();
     document.body.appendChild(canvas);
 
     axios.get('./maps.json')
-    .then((response) => {
-        levels = response.data.levels;
-        p.x = 0;
-        p.y = Math.round(levels[0][0].length/2);
-        loop();
-    })
-    .catch((error) => {
-        console.log(error);
-    });
+        .then((response) => {
+            levels = response.data.levels;
+            board = new Board(levels[currentLevel]);
+            let playerPos = board.getPlayerPos();
+            playerPos.x = playerPos.x;
+            playerPos.y = playerPos.y;
+            loop();
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 }
