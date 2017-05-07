@@ -45,12 +45,12 @@ let lpmCb = (event) => {
 }
 
 let ppmCb = (event) => {
-    let dx = player.x, dy = player.y;
-    if (player.dir == 'right') dx++;
-    if (player.dir == 'left') dx--;
-    if (player.dir == 'up') dy--;
-    if (player.dir == 'down') dy++;
-    board.setRight(dx, dy);
+    let tx = Math.round(player.x/tileSize) , ty = Math.round(player.y/tileSize);
+    if (player.dir == 'right') tx++;
+    if (player.dir == 'left') tx--;
+    if (player.dir == 'up') ty--;
+    if (player.dir == 'down') ty++;
+    board.setRight(tx, ty);
 
     event.preventDefault();
 }
