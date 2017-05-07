@@ -4,11 +4,16 @@ class Board {
         this.changeLevel(level, true);
         this.w = level[0].length;
         this.h = level.length;
+        this.fruits = 0;
     }
 
     changeLevel(level, first = false) {
+        let posOfGoal = {x: 0, y: 0};
         for (let i = 0; i < level.length; i++) {
             this.level[i] = level[i].slice();
+            for(let j=0;j<level[i].length;j++) {
+                if(level[i][j] === 'x') this.fruits++;
+            }
             if (!first) {
                 let index = this.level[i].indexOf('p');
                 if (index != -1) this.level[i][index] = 'e';

@@ -6,15 +6,15 @@ let canvas = document.createElement('canvas'),
     levels,
     board,
     tileSize,
-    player = { x: 0, y: 0, dir: 'right', speed: 10 },
+    player = { x: 0, y: 0, dir: 'right', speed: 10, score: 0 },
     playerPositions = [],
     enemyRespawnTime = 5000,
     gameOver = false,
     startPos,
-    bg
+    bg,
     marginLeft = 0,
     marginTop = 0,
-    enemy = { x: 0, y: 0, speed: 1, alive: false };
+    enemy = { x: 0, y: 0, alive: false };
 
 let clear = () => {
     ctx.fillStyle = "rgb(0,0,0)";
