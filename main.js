@@ -9,7 +9,8 @@ let canvas = document.createElement('canvas'),
     player = { x: 0, y: 0, dir: 'right' },
     playerPositions = [],
     enemyRespawnTime = 5000,
-    gameOver = true,
+    gameOver = false,
+    startPos,
     enemy = { x: 0, y: 0, speed: 1, alive: false };
 
 let clear = () => {
@@ -26,32 +27,47 @@ let scrollCb = (event) => {
     playerPositions.push({x: player.x, y: player.y});
 
     if(player.dir == 'right') player.x++;
-    if(player.dir == 'left') player.x--;
-    if(player.dir == 'up') player.y--;
-    if(player.dir == 'down') player.y++;
+    else if(player.dir == 'left') player.x--;
+    else if(player.dir == 'up') player.y--;
+    else if(player.dir == 'down') player.y++;
+    board.collision(player);
+}
+
+let restart = () => {
+    gameOver = false;
+    setTimeout(() => {enemy.alive = true}, enemyRespawnTime);
+    player.x = startPos.x;
+    player.y = startPos.y;
+    enemy.x = startPos.x;
+    enemy.y = startPos.y;
 }
 
 let keyCb = (event) => {
-    if(gameOver) gameOver = false;
+    if(gameOver) restart();
 }
 
 let lpmCb = (event) => {
-    let dx = player.x, dy = player.y;
-    if (player.dir == 'right') dx++;
-    if (player.dir == 'left') dx--;
-    if (player.dir == 'up') dy--;
-    if (player.dir == 'down') dy++;
-    board.setLeft(dx, dy);
+    if(gameOver) restart();
+    else {
+        let tx = Math.round(player.x/tileSize) , ty = Math.round(player.y/tileSize);
+        if (player.dir == 'right') tx++;
+        else if (player.dir == 'left') tx--;
+        else if (player.dir == 'up') ty--;
+        else if (player.dir == 'down') ty++;
+        board.setLeft(tx, ty);
+    }
 }
 
 let ppmCb = (event) => {
-    let tx = Math.round(player.x/tileSize) , ty = Math.round(player.y/tileSize);
-    if (player.dir == 'right') tx++;
-    if (player.dir == 'left') tx--;
-    if (player.dir == 'up') ty--;
-    if (player.dir == 'down') ty++;
-    board.setRight(tx, ty);
-
+    if(gameOver) restart();
+    else {
+        let tx = Math.round(player.x/tileSize) , ty = Math.round(player.y/tileSize);
+        if (player.dir == 'right') tx++;
+        else if (player.dir == 'left') tx--;
+        else if (player.dir == 'up') ty--;
+        else if (player.dir == 'down') ty++;
+        board.setRight(tx, ty);
+    }
     event.preventDefault();
 }
 
@@ -63,6 +79,7 @@ let update = () => {
         if(enemy.alive) {
             if(playerPositions.length == 0) {
                 gameOver = true;
+                enemy.alive = false;
             }
             else {
                 let lastPos = playerPositions.shift();
@@ -70,7 +87,6 @@ let update = () => {
                 enemy.y = lastPos.y;
             }
         }
-        board.collision(player);
     }
 }
 
@@ -120,11 +136,12 @@ let init = () => {
         .then((response) => {
             levels = response.data.levels;
             board = new Board(levels[currentLevel]);
-            let playerPos = board.getPlayerPos();
-            player.x = playerPos.x;
-            player.y = playerPos.y;
-            enemy.x = playerPos.x;
-            enemy.y = playerPos.y;
+            startPos = board.getPlayerPos();
+            player.x = startPos.x;
+            player.y = startPos.y;
+            
+            enemy.x = startPos.x;
+            enemy.y = startPos.y;
             setTimeout(() => {enemy.alive = true}, enemyRespawnTime);
             loop();
         })

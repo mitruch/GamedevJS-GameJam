@@ -44,26 +44,32 @@ class Board {
         if(this.level[Math.round(player.y/tileSize)][Math.round(player.x/tileSize)] == 'p') {
             if(player.dir == 'right') {
                 player.dir = 'down';
+                player.x--;
             } else if (player.dir == 'left') {
                 player.dir = 'up';
+                player.x++;
             } else if (player.dir == 'up') {
                 player.dir = 'right';
+                player.y++;
             } else if (player.dir == 'down') {
                 player.dir = 'left';
+                player.y--;
             }
-        
         }
         else if(this.level[Math.round(player.y/tileSize)][Math.round(player.x/tileSize)] == 'l') {
              if(player.dir == 'right') {
                 player.dir = 'up';
+                player.x--;
             } else if (player.dir == 'left') {
                 player.dir = 'down';
+                player.x++;
             } else if (player.dir == 'up') {
                 player.dir = 'left';
+                player.y++;
             } else if (player.dir == 'down') {
                 player.dir = 'right';
+                player.y--;
             }
-
         } 
      }
 
