@@ -45,20 +45,24 @@ class Board {
                     }
                     else if (tile === 'g') {
                         if (player.score == this.fruits) {
-                            ctx.fillStyle = 'rgb(255,255,0)';
+                            mock = false;
+                            ctx.drawImage(exitOpen, marginLeft + j * tileSize, marginTop + i * tileSize, tileSize, tileSize);
                         }
                         else {
-                            ctx.fillStyle = 'rgb(128,128,0)';
+                            mock = false;
+                            ctx.drawImage(exitClose, marginLeft + j * tileSize, marginTop + i * tileSize, tileSize, tileSize);
                         }
                     }
 
                     if (tile === 'l') {
-                        ctx.fillStyle = 'rgb(200,0,0)';
+                        mock = false;
+                        ctx.drawImage(rogal1, marginLeft + j * tileSize, marginTop + i * tileSize, tileSize, tileSize);
                     }
                     else if (tile === 'p') {
-                        ctx.fillStyle = 'rgb(244, 244, 65)';
+                        mock = false;
+                        ctx.drawImage(rogal2, marginLeft + j * tileSize, marginTop + i * tileSize, tileSize, tileSize);
                     }
-                    if(mock)
+                    if (mock)
                         ctx.fillRect(marginLeft + j * tileSize + 1, marginTop + i * tileSize + 1, tileSize - 2, tileSize - 2)
                 }
             }
