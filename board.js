@@ -34,22 +34,26 @@ class Board {
     }
 
     draw(player) {
+        ctx.drawImage(bg, marginLeft, marginTop, tileSize * this.w, tileSize * this.h);
         for (let i = 0; i < this.level.length; i++) {
             for (let j = 0; j < this.level[i].length; j++) {
                 let tile = this.level[i][j];
-                if (tile === 'e') {
-                    ctx.fillStyle = 'rgb(0,128,128)';
+                if (tile !== 'e') {
+                    if (tile === 'x') {
+                        ctx.fillStyle = 'rgb(244, 143, 66)';
+                    }
+                    else if (tile === 'g') {
+                        ctx.fillStyle = 'rgb(255,255,0)';
+                    }
+
+                    if (tile === 'l') {
+                        ctx.fillStyle = 'rgb(200,0,0)';
+                    }
+                    else if (tile === 'p') {
+                        ctx.fillStyle = 'rgb(244, 244, 65)';
+                    }
+                    ctx.fillRect(marginLeft + j * tileSize + 1, marginTop + i * tileSize + 1, tileSize - 2, tileSize - 2)
                 }
-                else if (tile === 'x') {
-                    ctx.fillStyle = 'rgb(244, 143, 66)';
-                }
-                else if (tile === 'l') {
-                    ctx.fillStyle = 'rgb(200,0,0)';
-                }
-                else if (tile === 'p') {
-                    ctx.fillStyle = 'rgb(244, 244, 65)';
-                }
-                ctx.fillRect(marginLeft + j * tileSize + 1, marginTop + i * tileSize + 1, tileSize - 2, tileSize - 2);
             }
         }
 
@@ -94,10 +98,10 @@ class Board {
         else if (player.x <= 0 && player.dir == 'left') {
             player.dir = 'right';
         }
-        else if (player.y >= this.h * tileSize && player.dir == 'down') {
+        else if (player.y >= (this.h - 1) * tileSize && player.dir == 'down') {
             player.dir = 'up';
         }
-        else if (player.x >= this.w * tileSize && player.dir == 'right') {
+        else if (player.x >= (this.w - 1) * tileSize && player.dir == 'right') {
             player.dir = 'left';
         }
     }
