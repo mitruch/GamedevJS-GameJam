@@ -1,8 +1,16 @@
 class Board {
     constructor(level) {
         this.level = [];
+        this.changeLevel(level, true);
+    }
+
+    changeLevel(level, first = false) {
         for (let i = 0; i < level.length; i++) {
             this.level[i] = level[i].slice();
+            if (!first) {
+                let index = this.level[i].indexOf('p');
+                if (index != -1) this.level[i][index] = 'e';
+            }
         }
     }
 
@@ -25,24 +33,24 @@ class Board {
                 }
                 else if (tile === 'x') {
                     ctx.fillStyle = 'rgb(244, 143, 66)';
-                } 
+                }
                 else if (tile === 'l') {
                     ctx.fillStyle = 'rgb(200,0,0)';
                 }
                 else if (tile === 'p') {
                     ctx.fillStyle = 'rgb(244, 244, 65)';
                 }
-                ctx.fillRect(j * tileSize + 1, i * tileSize + 1, tileSize - 2, tileSize - 2);
+                ctx.fillRect(marginLeft + j * tileSize + 1, marginTop + i * tileSize + 1, tileSize - 2, tileSize - 2);
             }
         }
 
         ctx.fillStyle = 'rgb(255,0,255)';
-        ctx.fillRect(player.x, player.y, tileSize, tileSize);
+        ctx.fillRect(marginLeft + player.x, marginTop + player.y, tileSize, tileSize);
     }
 
-     collision(player) {
-        if(this.level[Math.round(player.y/tileSize)][Math.round(player.x/tileSize)] == 'p') {
-            if(player.dir == 'right') {
+    collision(player) {
+        if (this.level[Math.round(player.y / tileSize)][Math.round(player.x / tileSize)] == 'p') {
+            if (player.dir == 'right') {
                 player.dir = 'down';
                 player.x--;
             } else if (player.dir == 'left') {
@@ -56,8 +64,8 @@ class Board {
                 player.y--;
             }
         }
-        else if(this.level[Math.round(player.y/tileSize)][Math.round(player.x/tileSize)] == 'l') {
-             if(player.dir == 'right') {
+        else if (this.level[Math.round(player.y / tileSize)][Math.round(player.x / tileSize)] == 'l') {
+            if (player.dir == 'right') {
                 player.dir = 'up';
                 player.x--;
             } else if (player.dir == 'left') {
@@ -70,16 +78,28 @@ class Board {
                 player.dir = 'right';
                 player.y--;
             }
-        } 
-     }
+        }
+        else if (player.y <= 0 && player.dir == 'up') {
+            player.dir = 'down';
+        }
+        else if (player.x <= 0 && player.dir == 'left') {
+            player.dir = 'right';
+        }
+        else if (player.y >= this.h * tileSize && player.dir == 'down') {
+            player.dir = 'up';
+        }
+        else if (player.x >= this.w * tileSize && player.dir == 'right') {
+            player.dir = 'left';
+        }
+    }
 
 
-     setLeft(x,y) {
+    setLeft(x, y) {
         this.level[y][x] = "l";
-     }
+    }
 
-     setRight(x,y) {
-         this.level[y][x] = "p";
-     }
+    setRight(x, y) {
+        this.level[y][x] = "p";
+    }
 
 }
