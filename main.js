@@ -5,13 +5,8 @@ let canvas = document.createElement('canvas'),
     lpm = false,
     levels,
     board,
-<<<<<<< HEAD
-    tileSize = 50,
-    player = { x: 0, y: 0, dir: 'right', speed: 10 },
-=======
     tileSize,
-    player = { x: 0, y: 0, dir: 'right' },
->>>>>>> 5a9de027061f385a250f27634ebfa291eaadf066
+    player = { x: 0, y: 0, dir: 'right', speed: 10 },
     playerPositions = [],
     enemyRespawnTime = 5000,
     gameOver = false,

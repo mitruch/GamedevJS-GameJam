@@ -1,19 +1,12 @@
 class Board {
     constructor(level) {
         this.level = [];
-<<<<<<< HEAD
-        this.changeLevel(level);
-    }
-
-    changeLevel(level) {
-=======
         this.changeLevel(level, true);
         this.w = level[0].length;
         this.h = level.length;
     }
 
     changeLevel(level, first = false) {
->>>>>>> 5a9de027061f385a250f27634ebfa291eaadf066
         for (let i = 0; i < level.length; i++) {
             this.level[i] = level[i].slice();
             if (!first) {
