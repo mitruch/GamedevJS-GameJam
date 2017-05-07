@@ -6,7 +6,7 @@ let canvas = document.createElement('canvas'),
     levels,
     board,
     tileSize = 50,
-    player = { x: 0, y: 0, dir: 'right' },
+    player = { x: 0, y: 0, dir: 'right', speed: 10 },
     playerPositions = [],
     enemyRespawnTime = 5000,
     gameOver = false,
@@ -26,20 +26,22 @@ let resize = () => {
 let scrollCb = (event) => {
     playerPositions.push({x: player.x, y: player.y});
 
-    if(player.dir == 'right') player.x++;
-    else if(player.dir == 'left') player.x--;
-    else if(player.dir == 'up') player.y--;
-    else if(player.dir == 'down') player.y++;
+    if(player.dir == 'right') player.x+=player.speed;
+    else if(player.dir == 'left') player.x-=player.speed;
+    else if(player.dir == 'up') player.y-=player.speed;
+    else if(player.dir == 'down') player.y+=player.speed;
     board.collision(player);
 }
 
 let restart = () => {
+
     gameOver = false;
     setTimeout(() => {enemy.alive = true}, enemyRespawnTime);
     player.x = startPos.x;
     player.y = startPos.y;
     enemy.x = startPos.x;
     enemy.y = startPos.y;
+    board.changeLevel(levels[currentLevel]);
 }
 
 let keyCb = (event) => {

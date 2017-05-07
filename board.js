@@ -1,6 +1,10 @@
 class Board {
     constructor(level) {
         this.level = [];
+        this.changeLevel(level);
+    }
+
+    changeLevel(level) {
         for (let i = 0; i < level.length; i++) {
             this.level[i] = level[i].slice();
         }
