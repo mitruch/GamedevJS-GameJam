@@ -11,6 +11,7 @@ let canvas = document.createElement('canvas'),
     enemyRespawnTime = 5000,
     gameOver = false,
     startPos,
+    bg
     marginLeft = 0,
     marginTop = 0,
     enemy = { x: 0, y: 0, speed: 1, alive: false };
@@ -28,7 +29,6 @@ let resize = () => {
         tileW = levels[currentLevel][0].length,
         ts1 = Math.floor(canvas.height/tileH),
         ts2 = Math.floor(canvas.width/tileW);
-    console.log(tileH, tileW);
     if(ts1 < ts2) {
         tileSize = ts1;
         marginLeft = (canvas.width - tileW*tileSize)/2;
@@ -155,6 +155,8 @@ let init = () => {
             levels = response.data.levels;
             resize();
             board = new Board(levels[currentLevel]);
+            bg = new Image();
+            bg.src = 'bg2.png   ';
             startPos = board.getPlayerPos();
             player.x = startPos.x;
             player.y = startPos.y;
