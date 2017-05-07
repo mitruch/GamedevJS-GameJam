@@ -55,35 +55,40 @@ class Board {
     }
 
     collision(player) {
-        if (this.level[Math.round(player.y / tileSize)][Math.round(player.x / tileSize)] == 'p') {
+        let objInIndex = this.level[Math.round(player.y / tileSize)][Math.round(player.x / tileSize)];
+        if ( objInIndex == 'p') {
             if (player.dir == 'right') {
                 player.dir = 'down';
-                player.x--;
+                player.x-=player.speed;
             } else if (player.dir == 'left') {
                 player.dir = 'up';
-                player.x++;
+                player.x+=player.speed;
             } else if (player.dir == 'up') {
                 player.dir = 'right';
-                player.y++;
+                player.y+=player.speed;
             } else if (player.dir == 'down') {
                 player.dir = 'left';
-                player.y--;
+                player.y-=player.speed;
             }
         }
-        else if (this.level[Math.round(player.y / tileSize)][Math.round(player.x / tileSize)] == 'l') {
+        else if (objInIndex == 'l') {
             if (player.dir == 'right') {
                 player.dir = 'up';
-                player.x--;
+                player.x-=player.speed;
             } else if (player.dir == 'left') {
                 player.dir = 'down';
-                player.x++;
+                player.x+=player.speed;
             } else if (player.dir == 'up') {
                 player.dir = 'left';
-                player.y++;
+                player.y+=player.speed;
             } else if (player.dir == 'down') {
                 player.dir = 'right';
-                player.y--;
+                player.y-=player.speed;
             }
+        }
+        else if (objInIndex == 'x' ) {
+            this.level[Math.round(player.y / tileSize)][Math.round(player.x / tileSize)] = "e";
+            player.score++;
         }
         else if (player.y <= 0 && player.dir == 'up') {
             player.dir = 'down';
