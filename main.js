@@ -5,12 +5,19 @@ let canvas = document.createElement('canvas'),
     lpm = false,
     levels,
     board,
+<<<<<<< HEAD
     tileSize = 50,
     player = { x: 0, y: 0, dir: 'right', speed: 10 },
+=======
+    tileSize,
+    player = { x: 0, y: 0, dir: 'right' },
+>>>>>>> 5a9de027061f385a250f27634ebfa291eaadf066
     playerPositions = [],
     enemyRespawnTime = 5000,
     gameOver = false,
     startPos,
+    marginLeft = 0,
+    marginTop = 0,
     enemy = { x: 0, y: 0, speed: 1, alive: false };
 
 let clear = () => {
@@ -21,6 +28,21 @@ let clear = () => {
 let resize = () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+
+    let tileH = levels[currentLevel].length,
+        tileW = levels[currentLevel][0].length,
+        ts1 = Math.floor(canvas.height/tileH),
+        ts2 = Math.floor(canvas.width/tileW);
+    console.log(tileH, tileW);
+    if(ts1 < ts2) {
+        tileSize = ts1;
+        marginLeft = (canvas.width - tileW*tileSize)/2;
+        marginTop = 0;
+    } else {
+        tileSize = ts2;
+        marginTop = (canvas.height - tileH*tileSize)/2;
+        marginLeft = 0;
+    }
 }
 
 let scrollCb = (event) => {
@@ -39,6 +61,7 @@ let restart = () => {
     setTimeout(() => {enemy.alive = true}, enemyRespawnTime);
     player.x = startPos.x;
     player.y = startPos.y;
+    player.dir = 'right';
     enemy.x = startPos.x;
     enemy.y = startPos.y;
     board.changeLevel(levels[currentLevel]);
@@ -108,7 +131,7 @@ let draw = () => {
         board.draw(player);
         if(enemy.alive) {
             ctx.fillStyle = "rgb(255,0,0)";
-            ctx.fillRect(enemy.x, enemy.y, tileSize, tileSize);
+            ctx.fillRect(marginLeft + enemy.x, marginTop + enemy.y, tileSize, tileSize);
         }
     }
 }
@@ -131,12 +154,12 @@ let init = () => {
     window.oncontextmenu = ppmCb;
     window.onkeydown = keyCb;
 
-    resize();
     document.body.appendChild(canvas);
 
     axios.get('./maps.json')
         .then((response) => {
             levels = response.data.levels;
+            resize();
             board = new Board(levels[currentLevel]);
             startPos = board.getPlayerPos();
             player.x = startPos.x;
