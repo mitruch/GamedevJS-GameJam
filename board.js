@@ -89,7 +89,12 @@ class Board {
         else if (objInIndex == 'x' ) {
             this.level[Math.round(player.y / tileSize)][Math.round(player.x / tileSize)] = "e";
             player.score++;
+        } 
+        else if (objInIndex == 'g' && this.fruits == player.score) {
+            currentLevel++;
+            restart(true);
         }
+
         else if (player.y <= 0 && player.dir == 'up') {
             player.dir = 'down';
         }
