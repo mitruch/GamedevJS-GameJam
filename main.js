@@ -12,6 +12,13 @@ let canvas = document.createElement('canvas'),
     gameOver = false,
     startPos,
     bg,
+    enemySpr,
+    rogal1,
+    rogal2,
+    exitClose,
+    exitOpen,
+    playerSpr,
+    fruits = [],
     marginLeft = 0,
     marginTop = 0,
     enemy = { x: 0, y: 0, alive: false };
@@ -65,6 +72,8 @@ let restart = (getPos = false) => {
     player.dir = 'right';
     enemy.x = startPos.x;
     enemy.y = startPos.y;
+    enemy.alive = false;
+    playerPositions = [];
 }
 
 let keyCb = (event) => {
@@ -130,8 +139,7 @@ let draw = () => {
     else {
         board.draw(player);
         if (enemy.alive) {
-            ctx.fillStyle = "rgb(255,0,0)";
-            ctx.fillRect(marginLeft + enemy.x, marginTop + enemy.y, tileSize, tileSize);
+            ctx.drawImage(enemySpr, marginLeft + enemy.x, marginTop + enemy.y, tileSize, tileSize * 1.2);
         }
 
         text = "Score: " + player.score + "/" + board.fruits;
@@ -167,7 +175,26 @@ let init = () => {
             resize();
             board = new Board(levels[currentLevel]);
             bg = new Image();
-            bg.src = 'bg2.png   ';
+            enemySpr = new Image();
+            playerSpr = new Image();
+            fruits[0] = new Image();
+            fruits[1] = new Image();
+            fruits[2] = new Image();
+            fruits[3] = new Image();
+            rogal1 = new Image();
+            rogal2 = new Image();
+            exitClose = new Image();
+            exitOpen = new Image();
+            bg.src = 'bg2.png';
+            playerSpr.src = 'playerSpr.png';
+            fruits[0].src = 'apfel.png';
+            fruits[1].src = 'perry.png';
+            fruits[2].src = 'strawberry.png';
+            enemySpr.src = 'enemySpr.png';
+            rogal1.src = 'rogal1.png';
+            rogal2.src = 'rogal3.png';
+            exitClose.src = 'exitClose.png';
+            exitOpen.src = 'exitOpen.png';
             startPos = board.getPlayerPos();
             player.x = startPos.x;
             player.y = startPos.y;
