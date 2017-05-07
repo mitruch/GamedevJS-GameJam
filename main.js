@@ -6,7 +6,8 @@ let canvas = document.createElement('canvas'),
     levels,
     board,
     tileSize = 50,
-    player = { x: 0, y: 0, dir: 'right', energy: 0 };
+    player = { x: 0, y: 0, dir: 'right', energy: 0 },
+    enemy = {};
 
 let clear = () => {
     ctx.fillStyle = "rgb(0,0,0)";
@@ -19,7 +20,7 @@ let resize = () => {
 }
 
 let scrollCb = (event) => {
-    player.energy++;
+    player.x++;
 }
 
 let lpmCb = (event) => {
@@ -28,7 +29,7 @@ let lpmCb = (event) => {
     if (player.dir == 'left') dx--;
     if (player.dir == 'up') dy--;
     if (player.dir == 'down') dy++;
-    board.setLeftDown(dx, dy);
+    // board.setLeftDown(dx, dy);
 }
 
 let ppmCb = (event) => {
@@ -37,7 +38,7 @@ let ppmCb = (event) => {
     if (player.dir == 'left') dx--;
     if (player.dir == 'up') dy--;
     if (player.dir == 'down') dy++;
-    board.setLeftUp(dx, dy);
+    // board.setLeftUp(dx, dy);
 
     event.preventDefault();
 }
@@ -47,36 +48,14 @@ let update = () => {
         player.x++;
         player.energy -= 10;
     }
-    if(board.isColliding(player)) {
-        board.changeDir(player);   
-    }
-}
-
-let drawMap = () => {
-
+    // if(board.isColliding(player)) {
+    //     board.changeDir(player);
+    // }
 }
 
 let draw = () => {
     clear();
-
-    board.draw();
-
-    // for (let i = 0; i < levels[currentLevel].length; i++) {
-    //     let level = levels[currentLevel];
-    //     for (let j = 0; j < level[i].length; j++) {
-    //         let tile = level[i][j];
-    //         if (p.x == j && p.y == i) {
-    //             ctx.fillStyle = 'rgb(0,200,0)'
-    //         }
-    //         else if (tile === 'e') {
-    //             ctx.fillStyle = 'rgb(0,128,128)';
-    //         }
-    //         else if (tile === 'x') {
-    //             ctx.fillStyle = 'rgb(200,0,0)';
-    //         }
-    //         ctx.fillRect(j * tileSize + 1, i * tileSize + 1, tileSize - 2, tileSize - 2);
-    //     }
-    // }
+    board.draw(player);
 }
 
 let loop = () => {
