@@ -14,7 +14,7 @@ let canvas = document.createElement('canvas'),
     bg,
     marginLeft = 0,
     marginTop = 0,
-    enemy = { x: 0, y: 0, speed: 1, alive: false };
+    enemy = { x: 0, y: 0, alive: false };
 
 let clear = () => {
     ctx.fillStyle = "rgb(0,0,0)";
@@ -27,49 +27,51 @@ let resize = () => {
 
     let tileH = levels[currentLevel].length,
         tileW = levels[currentLevel][0].length,
-        ts1 = Math.floor(canvas.height/tileH),
-        ts2 = Math.floor(canvas.width/tileW);
-    if(ts1 < ts2) {
+        ts1 = Math.floor(canvas.height / tileH),
+        ts2 = Math.floor(canvas.width / tileW);
+    if (ts1 < ts2) {
         tileSize = ts1;
-        marginLeft = (canvas.width - tileW*tileSize)/2;
+        marginLeft = (canvas.width - tileW * tileSize) / 2;
         marginTop = 0;
     } else {
         tileSize = ts2;
-        marginTop = (canvas.height - tileH*tileSize)/2;
+        marginTop = (canvas.height - tileH * tileSize) / 2;
         marginLeft = 0;
     }
 }
 
 let scrollCb = (event) => {
-    playerPositions.push({x: player.x, y: player.y});
+    playerPositions.push({ x: player.x, y: player.y });
 
-    if(player.dir == 'right') player.x+=player.speed;
-    else if(player.dir == 'left') player.x-=player.speed;
-    else if(player.dir == 'up') player.y-=player.speed;
-    else if(player.dir == 'down') player.y+=player.speed;
+    if (player.dir == 'right') player.x += player.speed;
+    else if (player.dir == 'left') player.x -= player.speed;
+    else if (player.dir == 'up') player.y -= player.speed;
+    else if (player.dir == 'down') player.y += player.speed;
     board.collision(player);
 }
 
-let restart = () => {
-
+let restart = (getPos = false) => {
     gameOver = false;
-    setTimeout(() => {enemy.alive = true}, enemyRespawnTime);
+    setTimeout(() => { enemy.alive = true }, enemyRespawnTime);
+    board.changeLevel(levels[currentLevel]);
+    if (getPos)
+        board.getPlayerPos();
     player.x = startPos.x;
     player.y = startPos.y;
+    player.score = 0;
     player.dir = 'right';
     enemy.x = startPos.x;
     enemy.y = startPos.y;
-    board.changeLevel(levels[currentLevel]);
 }
 
 let keyCb = (event) => {
-    if(gameOver) restart();
+    if (gameOver) restart();
 }
 
 let lpmCb = (event) => {
-    if(gameOver) restart();
+    if (gameOver) restart();
     else {
-        let tx = Math.round(player.x/tileSize) , ty = Math.round(player.y/tileSize);
+        let tx = Math.round(player.x / tileSize), ty = Math.round(player.y / tileSize);
         if (player.dir == 'right') tx++;
         else if (player.dir == 'left') tx--;
         else if (player.dir == 'up') ty--;
@@ -79,9 +81,9 @@ let lpmCb = (event) => {
 }
 
 let ppmCb = (event) => {
-    if(gameOver) restart();
+    if (gameOver) restart();
     else {
-        let tx = Math.round(player.x/tileSize) , ty = Math.round(player.y/tileSize);
+        let tx = Math.round(player.x / tileSize), ty = Math.round(player.y / tileSize);
         if (player.dir == 'right') tx++;
         else if (player.dir == 'left') tx--;
         else if (player.dir == 'up') ty--;
@@ -92,12 +94,12 @@ let ppmCb = (event) => {
 }
 
 let update = () => {
-    if(gameOver) {
-        
+    if (gameOver) {
+
     }
     else {
-        if(enemy.alive) {
-            if(playerPositions.length == 0) {
+        if (enemy.alive) {
+            if (playerPositions.length == 0) {
                 gameOver = true;
                 enemy.alive = false;
             }
@@ -112,19 +114,19 @@ let update = () => {
 
 let draw = () => {
     clear();
-    if(gameOver) {
+    if (gameOver) {
         ctx.fillStyle = "rgb(255,255,255)";
         ctx.font = '40px Monospace';
         let text = "GAME OVER";
-        ctx.fillText(text, canvas.width/2 - ctx.measureText(text).width/2, canvas.height/2 - 40);
+        ctx.fillText(text, canvas.width / 2 - ctx.measureText(text).width / 2, canvas.height / 2 - 40);
 
         text = "Press something to player again";
         ctx.font = '30px Monospace';
-        ctx.fillText(text, canvas.width/2 - ctx.measureText(text).width/2, canvas.height/2);
+        ctx.fillText(text, canvas.width / 2 - ctx.measureText(text).width / 2, canvas.height / 2);
     }
     else {
         board.draw(player);
-        if(enemy.alive) {
+        if (enemy.alive) {
             ctx.fillStyle = "rgb(255,0,0)";
             ctx.fillRect(marginLeft + enemy.x, marginTop + enemy.y, tileSize, tileSize);
         }
@@ -161,10 +163,10 @@ let init = () => {
             startPos = board.getPlayerPos();
             player.x = startPos.x;
             player.y = startPos.y;
-            
+
             enemy.x = startPos.x;
             enemy.y = startPos.y;
-            setTimeout(() => {enemy.alive = true}, enemyRespawnTime);
+            setTimeout(() => { enemy.alive = true }, enemyRespawnTime);
             loop();
         })
         .catch((error) => {
