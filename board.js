@@ -4,7 +4,7 @@ class Board {
         this.fruits = 0;
         this.w = level[0].length;
         this.h = level.length;
-        
+
         this.changeLevel(level, true);
     }
 
@@ -38,8 +38,10 @@ class Board {
             for (let j = 0; j < this.level[i].length; j++) {
                 let tile = this.level[i][j];
                 if (tile !== 'e') {
+                    let mock = true;
                     if (tile === 'x') {
-                        ctx.fillStyle = 'rgb(244, 143, 66)';
+                        ctx.drawImage(fruits[0], marginLeft + j * tileSize, marginTop + i * tileSize, tileSize, tileSize);
+                        mock = false;
                     }
                     else if (tile === 'g') {
                         if (player.score == this.fruits) {
@@ -56,13 +58,13 @@ class Board {
                     else if (tile === 'p') {
                         ctx.fillStyle = 'rgb(244, 244, 65)';
                     }
-                    ctx.fillRect(marginLeft + j * tileSize + 1, marginTop + i * tileSize + 1, tileSize - 2, tileSize - 2)
+                    if(mock)
+                        ctx.fillRect(marginLeft + j * tileSize + 1, marginTop + i * tileSize + 1, tileSize - 2, tileSize - 2)
                 }
             }
         }
 
-        ctx.fillStyle = 'rgb(255,0,255)';
-        ctx.fillRect(marginLeft + player.x, marginTop + player.y, tileSize, tileSize);
+        ctx.drawImage(playerSpr, marginLeft + player.x, marginTop + player.y, tileSize, tileSize);
     }
 
     collision(player) {
@@ -100,7 +102,7 @@ class Board {
         else if (objInIndex === 'x') {
             this.level[Math.round(player.y / tileSize)][Math.round(player.x / tileSize)] = "e";
             player.score++;
-        } 
+        }
         else if (objInIndex === 'g' && this.fruits === player.score) {
             currentLevel++;
             restart(true);
@@ -122,12 +124,12 @@ class Board {
 
 
     setLeft(x, y) {
-        if(this.level[y][x] == 'e')
+        if (this.level[y] && this.level[y][x] && this.level[y][x] == 'e')
             this.level[y][x] = "l";
     }
 
     setRight(x, y) {
-        if(this.level[y][x] == 'e')
+        if (this.level[y] && this.level[y][x] && this.level[y][x] == 'e')
             this.level[y][x] = "p";
     }
 
