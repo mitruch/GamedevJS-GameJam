@@ -24,7 +24,13 @@ class Board {
                     ctx.fillStyle = 'rgb(0,128,128)';
                 }
                 else if (tile === 'x') {
+                    ctx.fillStyle = 'rgb(244, 143, 66)';
+                } 
+                else if (tile === 'l') {
                     ctx.fillStyle = 'rgb(200,0,0)';
+                }
+                else if (tile === 'p') {
+                    ctx.fillStyle = 'rgb(244, 244, 65)';
                 }
                 ctx.fillRect(j * tileSize + 1, i * tileSize + 1, tileSize - 2, tileSize - 2);
             }
@@ -33,4 +39,41 @@ class Board {
         ctx.fillStyle = 'rgb(255,0,255)';
         ctx.fillRect(player.x, player.y, tileSize, tileSize);
     }
+
+     collision(player) {
+        if(this.level[Math.round(player.y/tileSize)][Math.round(player.x/tileSize)] == 'p') {
+            if(player.dir == 'right') {
+                player.dir = 'down';
+            } else if (player.dir == 'left') {
+                player.dir = 'up';
+            } else if (player.dir == 'up') {
+                player.dir = 'right';
+            } else if (player.dir == 'down') {
+                player.dir = 'left';
+            }
+        
+        }
+        else if(this.level[Math.round(player.y/tileSize)][Math.round(player.x/tileSize)] == 'l') {
+             if(player.dir == 'right') {
+                player.dir = 'up';
+            } else if (player.dir == 'left') {
+                player.dir = 'down';
+            } else if (player.dir == 'up') {
+                player.dir = 'left';
+            } else if (player.dir == 'down') {
+                player.dir = 'right';
+            }
+
+        } 
+     }
+
+
+     setLeft(x,y) {
+        this.level[y][x] = "l";
+     }
+
+     setRight(x,y) {
+         this.level[y][x] = "p";
+     }
+
 }
