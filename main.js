@@ -58,6 +58,7 @@ let restart = (getPos = false) => {
         board.getPlayerPos();
     player.x = startPos.x;
     player.y = startPos.y;
+    player.score = 0;
     player.dir = 'right';
     enemy.x = startPos.x;
     enemy.y = startPos.y;
