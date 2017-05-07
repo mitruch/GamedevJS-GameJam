@@ -2,6 +2,8 @@ class Board {
     constructor(level) {
         this.level = [];
         this.changeLevel(level, true);
+        this.w = level[0].length;
+        this.h = level.length;
     }
 
     changeLevel(level, first = false) {
