@@ -1,13 +1,15 @@
 class Board {
     constructor(level) {
         this.level = [];
-        this.changeLevel(level, true);
+        this.fruits = 0;
         this.w = level[0].length;
         this.h = level.length;
-        this.fruits = 0;
+        
+        this.changeLevel(level, true);
     }
 
     changeLevel(level, first = false) {
+        this.fruits = 0;
         for (let i = 0; i < level.length; i++) {
             this.level[i] = level[i].slice();
             for (let j = 0; j < level[i].length; j++) {
@@ -40,7 +42,7 @@ class Board {
                         ctx.fillStyle = 'rgb(244, 143, 66)';
                     }
                     else if (tile === 'g') {
-                        if (player.score == board.fruits) {
+                        if (player.score == this.fruits) {
                             ctx.fillStyle = 'rgb(255,255,0)';
                         }
                         else {
@@ -95,11 +97,11 @@ class Board {
                 player.y -= player.speed;
             }
         }
-        else if (objInIndex == 'x') {
+        else if (objInIndex === 'x') {
             this.level[Math.round(player.y / tileSize)][Math.round(player.x / tileSize)] = "e";
             player.score++;
         } 
-        else if (objInIndex == 'g' && this.fruits == player.score) {
+        else if (objInIndex === 'g' && this.fruits === player.score) {
             currentLevel++;
             restart(true);
         }

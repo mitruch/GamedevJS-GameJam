@@ -41,6 +41,7 @@ let resize = () => {
 }
 
 let scrollCb = (event) => {
+    let lastPos = { x: player.x, y: player.y };
     playerPositions.push({ x: player.x, y: player.y });
 
     if (player.dir == 'right') player.x += player.speed;
@@ -48,6 +49,8 @@ let scrollCb = (event) => {
     else if (player.dir == 'up') player.y -= player.speed;
     else if (player.dir == 'down') player.y += player.speed;
     board.collision(player);
+
+    playerPositions.push({ x: (player.x + lastPos.x) / 2, y: (player.y + lastPos.y) / 2 });
 }
 
 let restart = (getPos = false) => {
@@ -130,6 +133,11 @@ let draw = () => {
             ctx.fillStyle = "rgb(255,0,0)";
             ctx.fillRect(marginLeft + enemy.x, marginTop + enemy.y, tileSize, tileSize);
         }
+
+        text = "Score: " + player.score;
+        ctx.fillStyle = "#ffa500";
+        ctx.font = '40px Monospace';
+        ctx.fillText(text, canvas.width / 2 - ctx.measureText(text).width / 2, 40);
     }
 }
 
