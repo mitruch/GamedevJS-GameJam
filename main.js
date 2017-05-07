@@ -134,7 +134,7 @@ let draw = () => {
             ctx.fillRect(marginLeft + enemy.x, marginTop + enemy.y, tileSize, tileSize);
         }
 
-        text = "Score: " + player.score;
+        text = "Score: " + player.score + "/" + board.fruits;
         ctx.fillStyle = "#ffa500";
         ctx.font = '40px Monospace';
         ctx.fillText(text, canvas.width / 2 - ctx.measureText(text).width / 2, 40);
